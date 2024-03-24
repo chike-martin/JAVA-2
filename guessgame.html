@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guessing Game</title>
+</head>
+
+<body>
+
+    <button id="startGameButton" class="start">Start Game</button>
+
+    <script>
+        document.getElementById("startGameButton").addEventListener("click", startGame);
+
+        function startGame() {
+            const min = 20;
+            const max = 40;         //variable declaration and initialisation
+            let trialCount = 0;
+            const trial = 4;
+
+            //get user name from prompt
+            let userName = prompt("Please enter your Username:");
+
+            if (userName === null || userName.trim() === "") {
+                alert('Username cannot be empty');
+                userName = prompt("Please enter your Username:");
+            }
+
+            const cohort = prompt('Please enter your Cohort');
+
+            const randomNumber = getRandomNumber(min, max);
+            console.log("Random Number:", randomNumber);
+
+            promptUser();
+
+
+             // FUNCTIONS
+            function promptUser() {
+                const userNumber = parseInt(prompt(`Hello ${userName} from ${cohort}, please enter a number between ${min} and ${max} inclusive`));
+
+                if (isNaN(userNumber) || userNumber < min || userNumber > max) {
+                    alert('Invalid input! Please enter a valid number between ' + min + " and " + max);
+                    promptUser(); // Prompt again recursively if input is invalid
+                } else {
+                    checkOption(userNumber, randomNumber);
+                }
+            }
+
+           //function to generate a random number between 20 and 40 inclusive
+            function getRandomNumber(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            function checkOption(userNumber, randNumber) {
+                if (userNumber === randNumber) {
+                    console.log(`Congratulations ${userName}, you guessed the right number! It was ${randNumber} `);
+                    alert(`Congratulations ${userName}, you guessed the right number! It was ${randNumber} `);
+                } else {
+                    trialCount++;
+                    let remainingTrials = trial - trialCount;
+                    if (remainingTrials === 0) {
+                        console.log(`Sorry ${userName}, you have reached the maximum attempts. The correct answer is ${randNumber}.`);
+                        alert(`Sorry ${userName}, you have reached the maximum attempts. The correct answer is ${randNumber}.`);
+                    } else {
+                        console.log(`Wrong Guess, ${userName}! Try again. You have ${remainingTrials} trial${remainingTrials === 1 ? '' : 's'} left.`);
+                        alert(`Wrong Guess, ${userName}! Try Again. You have ${remainingTrials} trial${remainingTrials === 1 ? '' : 's'} left.`);
+                        promptUser(); // Prompt for next guess
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>
